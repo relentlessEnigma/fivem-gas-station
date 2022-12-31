@@ -36,4 +36,9 @@ $(function() {
         $.post('https://gas-station/GasStation:fuel', JSON.stringify({amount: $('#quantity').val()}));
         $.post('https://gas-station/GasStation:ui-off', JSON.stringify({}));
     });
+
+    $("#atestar").click(function() {
+        $.post('https://gas-station/GasStation:fuelfull', JSON.stringify({amount: $('#quantity').val()}));
+        $.post('https://gas-station/GasStation:ui-off', JSON.stringify({}));
+    });
 });

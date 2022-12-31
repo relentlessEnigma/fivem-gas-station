@@ -1,7 +1,6 @@
+local amountMax
+
 ESX.RegisterServerCallback('GasStation:GetInformation', function(source, cb, fuelAvailable)
-
-    print("SERVER: fuelAvailable" .. fuelAvailable)
-
     local playerPed = GetPlayerPed(source)
     local vehicle = GetVehiclePedIsIn(playerPed, true)
 
@@ -9,7 +8,7 @@ ESX.RegisterServerCallback('GasStation:GetInformation', function(source, cb, fue
     local vehcileMaximumLiters = 100 --hardcoded for now
     local gasPrice = 1.85 --hardcoded for now
     local litersAvailableInTank = fuelAvailable
-    local amountMax = (vehcileMaximumLiters - litersAvailableInTank)*gasPrice
+    amountMax = (vehcileMaximumLiters - litersAvailableInTank)*gasPrice
 
     cb(gasPrice, petrolTankDamage, amountMax)
 end)
@@ -20,9 +19,17 @@ RegisterNetEvent('GasStation:PayGasSV', function(amount)
 	local xPlayer = ESX.GetPlayerFromId(_source)
 
     if xPlayer.getMoney() >= _amount then
-        xPlayer.removeMoney(_amount)
+        if(_amount > amountMax) then
+            xPlayer.removeMoney(amountMax)
+        else
+            xPlayer.removeMoney(_amount)
+        end
         TriggerClientEvent('GasStation:PayGas', -1, true)
     else
         TriggerClientEvent('GasStation:PayGas', -1, false)
     end
+end)
+
+RegisterNetEvent('GasStation:SaveFuelAmount', function(plate, fuel)
+    MySQL.Async.fetchAll('UPDATE owned_vehicles SET fuel = @fuel WHERE plate = @plate', {['@fuel'] = fuel, ['@plate'] = plate})
 end)

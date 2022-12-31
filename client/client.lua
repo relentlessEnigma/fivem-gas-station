@@ -1,10 +1,11 @@
 local player = GetPlayerPed(-1)
-local vehicle
-local actualFuelAmount
-local fullTank = 100
+local fullTank = 99
 local canPay = false
 local running = false
 local gasPrice = 1.85
+local vehicle = nil
+local actualFuelAmount
+local maxValue
 
 Citizen.CreateThread(function()
     while true do
@@ -16,7 +17,6 @@ Citizen.CreateThread(function()
             local vehCoords = GetEntityCoords(vehicle)
             local pedCoords = GetEntityCoords(player)
             vehicle = GetVehiclePedIsIn(player, true)
-            actualFuelAmount = GetVehicleFuelLevel(vehicle)
 
             if getCoordsDistance() then
                 showMenu()
@@ -24,6 +24,7 @@ Citizen.CreateThread(function()
                     if IsPedInAnyVehicle(player, false) then
                         ESX.ShowNotification("You must be out of the car to fill the tank")    
                     elseif compareDistances(pedCoords, vehCoords, false) < 5 then
+                        actualFuelAmount = GetVehicleFuelLevel(vehicle)
                         TriggerEvent('GasStation:ui-on')
                     else
                         ESX.ShowNotification("You are far from your vehicle")
@@ -37,6 +38,7 @@ end)
 RegisterNetEvent('GasStation:ui-on', function()
 
     ESX.TriggerServerCallback('GasStation:GetInformation', function(gasPrice, tankDamage, amountMax) 
+        maxValue = amountMax
         if(tankDamage < 20 ) then 
             tankDamage = "Tank Fuel danificado! Aconselha-se a reparação!"
         end
@@ -72,9 +74,16 @@ RegisterNUICallback('GasStation:fuel', function(data)
         return
     end
     local finalactualFuelAmount = actualFuelAmount + (quantity*1)/gasPrice
+    local maxGasAllowedInTank = actualFuelAmount + (maxValue*1)/gasPrice
 
     if payGas(quantity) then
-        SetVehicleFuelLevel(vehicle, finalactualFuelAmount)
+        if(finalactualFuelAmount > maxGasAllowedInTank) then
+            SetVehicleFuelLevel(vehicle, maxGasAllowedInTank)
+            TriggerServerEvent('GasStation:SaveFuelAmount', GetVehicleNumberPlateText(vehicle), maxGasAllowedInTank)
+        else
+            SetVehicleFuelLevel(vehicle, finalactualFuelAmount)
+            TriggerServerEvent('GasStation:SaveFuelAmount', GetVehicleNumberPlateText(vehicle), finalactualFuelAmount)
+        end
         ESX.ShowNotification("Your car is now with " .. string.format("%.0f", GetVehicleFuelLevel(vehicle)) .. "% of fuel")
     end
 end)
@@ -83,6 +92,7 @@ RegisterNUICallback('GasStation:fuelfull', function(data)
     local quantity = (100 - actualFuelAmount) * 1 / gasPrice
     if payGas(quantity) then
         SetVehicleFuelLevel(vehicle, fullTank)
+        TriggerServerEvent('GasStation:SaveFuelAmount', GetVehicleNumberPlateText(vehicle), fullTank)
         ESX.ShowNotification("Your car is now with " .. string.format("%.0f", GetVehicleFuelLevel(vehicle)) .. "% of fuel")
     end
 end)
@@ -94,12 +104,11 @@ function payGas(amount)
     while running do
         Wait(200)
     end
-    print(canPay)
     if canPay then
         return true
     end
 
-    ESX.ShowNotification("Sorry! We just take cash and it looks like u dont hav it!")
+    ESX.ShowNotification("Sorry! We just take cash and it looks like u dont have it!")
     return false
 end
 
