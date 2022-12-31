@@ -25,7 +25,7 @@ Citizen.CreateThread(function()
                         ESX.ShowNotification("You must be out of the car to fill the tank")    
                     elseif compareDistances(pedCoords, vehCoords, false) < 5 then
                         actualFuelAmount = GetVehicleFuelLevel(vehicle)
-                        TriggerEvent('GasStation:ui-on')
+                        openUI()
                     else
                         ESX.ShowNotification("You are far from your vehicle")
                     end
@@ -35,7 +35,8 @@ Citizen.CreateThread(function()
     end
 end)
 
-RegisterNetEvent('GasStation:ui-on', function()
+function openUI()
+    local gasStationName, gasStationAddress = getGasStationPlayerIsIn()
 
     ESX.TriggerServerCallback('GasStation:GetInformation', function(gasPrice, tankDamage, amountMax) 
         maxValue = amountMax
@@ -52,10 +53,12 @@ RegisterNetEvent('GasStation:ui-on', function()
             visible = true,
             gasPrice = gasPrice,
             tankDamage = tankDamage,
-            amountMax = amountMax
+            amountMax = amountMax,
+            gasStationName = gasStationName,
+            gasStationAddress = gasStationAddress
         })
     end, actualFuelAmount)
-end)
+end
 
 RegisterNUICallback('GasStation:ui-off', function()
     SetNuiFocus(false, false)
@@ -144,4 +147,34 @@ function showMenu()
     SetTextCentre(false)
     AddTextComponentString('Press E to fuel')
     DrawText(0.825, 0.825)    
+end
+
+function getGasStationPlayerIsIn()
+    local lowestDist = 10000
+    local gasStationName = ""
+    local gasStationAddress = ""
+    local amountOfStations = getTableLenght(Config.GasStations.stations)
+    for i=1, amountOfStations, 1 do 
+        local playerCoords = GetEntityCoords(player)
+        local amountOfPoles = getTableLenght(Config.GasStations.stations[i].Poles)
+       
+        for j=1, amountOfPoles, 1 do
+            local pol = Config.GasStations.stations[i].Poles[j]
+            local dist = GetDistanceBetweenCoords(pol.x, pol.y, pol.z, playerCoords.x, playerCoords.y, playerCoords.z)
+            if lowestDist > dist then
+                lowestDist = dist
+                gasStationName = Config.GasStations.stations[i].Name
+                gasStationAddress = Config.GasStations.stations[i].Location
+            end
+        end
+    end
+    return gasStationName, gasStationAddress
+end
+
+function getTableLenght(table)
+    local size = 0
+    for _ in pairs(table) do
+        size = size + 1
+    end
+    return size
 end

@@ -1,9 +1,9 @@
 $(function() {
     function display(bool) {
         if (bool) {
-            $("#menu").show();
+            $(".box").show();
         } else {
-            $("#menu").hide();
+            $(".box").hide();
         }
     }
 
@@ -11,6 +11,9 @@ $(function() {
 
     window.addEventListener('message', function(event) {
         var item = event.data;
+
+        console.log(event.data.gasPrice)
+        console.log(event.data.gasStationName)
 
         if(item.type == "ui") {
             if(item.visible == true) {
@@ -20,9 +23,11 @@ $(function() {
             }
         }
 
-        $("#price").text("Gas Price: " + item.gasPrice);
+        $(".form h2").text("Welcome to " + item.gasStationName)
+        $(".form h4").text(item.gasStationAddress)
+        $("#price").text("Gas Price: " + item.gasPrice)
         $("#tankDamage").text("Tank Health: " + item.tankDamage)
-        $("#amountMax").text("Maximum you can fill is: " + item.amountMax + "€€")
+        $("#amountMax").text("Maximum you can fill is: " + item.amountMax.toFixed(2) + "€")
     })
 
     document.onkeyup = function(data) {

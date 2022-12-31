@@ -1,27 +1,28 @@
 <html>
+<head>
+    <link rel="stylesheet" href="styles.css" type="text/css">
+    <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+    <script src="./script.js" type="text/javascript"></script>
+    <title>Gas Station Menu</title>
+</head>
 
-    <head>
-        <link rel="stylesheet" href="styles.css" type="text/css">
-        <script src="nui://game/ui/jquery.js" type="text/javascript"></script>
-        <script src="./script.js" type="text/javascript"></script>
-        <title>Gas Station Menu</title>
-    </head>
-
-    <body>
-        <div id='menu'>
-            <div id="title">
-                <h1>Gas Station</h1>
+<body>
+    <div class="box">
+        
+        <div class="form">
+            <h2>Gas Station</h2>
+            <h4>Gas Station Name</h4>
+            <p id="price">Preço Litro: </p>
+            <p id="tankDamage">Estado Tank: </p><br>
+            <p id="amountMax">Valor Para encher o tank: </p>
+            <div class="inputBox">
+                <input type="text" required="required" id="quantity" name="fname" value="0">
+                <span>How much you want to fuel (€)?</span>
+                <i></i>
             </div>
-            <div id="values">
-                <h4 id="price">Preço litro:</h4>
-                <h4 id="tankDamage">Estado Tank: </h4>
-                <h4 id="amountMax">Valor Para encher o tank: </h4>
-                <h4>How much you want to fuel ?</h4>
-                <input type="text" id="quantity" name="fname" value="0">€€<br><br>
-                <button type="submit" id="buttonclick">Atestar com o valor</button>
-                <button type="submit" id="atestar">Encher o Tank</button>
-            </div>
+            <input type="submit" id="buttonclick" value="Encher com valor selecionado">
+            <input type="submit" id="atestar" value="Encher o Tank Todo"><span id="fullTankPrice"></span>
         </div>
-    </body>
-
+    </div>
+</body>
 </html>
