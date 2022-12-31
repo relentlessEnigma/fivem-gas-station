@@ -91,7 +91,10 @@ RegisterNUICallback('GasStation:fuel', function(data)
     end
 end)
 
-RegisterNUICallback('GasStation:fuelfull', function(data)
+RegisterNUICallback('GasStation:fuelfull', function()
+
+    print(actualFuelAmount)
+
     local quantity = (100 - actualFuelAmount) * 1 / gasPrice
     if payGas(quantity) then
         SetVehicleFuelLevel(vehicle, fullTank)

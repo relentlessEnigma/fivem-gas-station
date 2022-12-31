@@ -17,7 +17,7 @@ body {
 .box {
     position: relative;
     width: 380px;
-    height: 420px;
+    height: 500px;
     background: #1c1c1c;
     border-radius: 8px;
     overflow: hidden;
@@ -83,7 +83,7 @@ body {
     font-size: 0.65em;
     text-align: center;
     letter-spacing: 0.1em;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 .form p {
@@ -96,6 +96,7 @@ body {
 
 .form p ~ #amountMax {
     font-size: 0.65em;
+    margin-top: 0px;
 }
 
 .inputBox {
