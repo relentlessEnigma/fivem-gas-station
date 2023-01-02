@@ -7,10 +7,13 @@ $(function() {
         }
     }
 
+    var gasPrice = 0 
+
     display(false)
 
     window.addEventListener('message', function(event) {
         var item = event.data;
+        gasPrice = item.gasPrice;
 
         if(item.type == "ui") {
             if(item.visible == true) {
@@ -27,7 +30,7 @@ $(function() {
         if(item.amountMax == undefined) {
             item.amountMax = 0.00
         }
-        $("#amountMax").text("Maximum you can fill is: " + item.amountMax.toFixed(2) + "€")
+        $("#amountMax").text("Price to total fill: " + item.amountMax.toFixed(2) + "€")
     })
 
     document.onkeyup = function(data) {
@@ -38,7 +41,11 @@ $(function() {
     };
 
     $("#buttonclick").click(function() {
-        $.post('https://gas-station/GasStation:fuel', JSON.stringify({amount: $('#quantity').val()}));
+        $.post('https://gas-station/GasStation:fuel', JSON.stringify(
+            {
+                amount: $('#quantity').val(),
+                gasPrice: gasPrice
+            }));
         $.post('https://gas-station/GasStation:ui-off', JSON.stringify({}));
     });
 

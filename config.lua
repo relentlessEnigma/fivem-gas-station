@@ -5,6 +5,7 @@ Config.GasStations = {
         {
             Name = 'Limited Gasoline',
             Location = 'Little Seoul',
+            GasPrice = 1.85,
             Poles = {
                 vector3(-715.000, -932.000, 19.000),
                 vector3(-715.000, -939.000, 19.000),
@@ -17,6 +18,7 @@ Config.GasStations = {
         {
             Name = 'Limited Gasoline',
             Location = 'Davis',
+            GasPrice = 1.85,
             Poles = {
                 vector3(-61.000, -1761.000, 29.000),
                 vector3(-63.000, -1767.000, 29.000),
@@ -29,6 +31,7 @@ Config.GasStations = {
         {
             Name = 'Xero Gas 24',
             Location = 'Strawberry',
+            GasPrice = 2.25,
             Poles = {
                 vector3(274.000, -1253.000, 29.000),
                 vector3(274.000, -1261.000, 29.000),
@@ -44,6 +47,7 @@ Config.GasStations = {
         {
             Name = 'Ron',
             Location = 'La Mesa',
+            GasPrice = 2.05,
             Poles = {
                 vector3(810.000, -1031.000, 26.000),
                 vector3(810.000, -1026.000, 26.000),
@@ -56,6 +60,7 @@ Config.GasStations = {
         {
             Name = 'Xero Gas',
             Location = 'Pacific Bluffs',
+            GasPrice = 2.25,
             Poles = {
                 vector3(-2088.800, -327.400, 13.160),
                 vector3(-2088.020, -321.090, 13.160),
@@ -71,6 +76,7 @@ Config.GasStations = {
         {
             Name = 'Globe Oil',
             Location = 'Route 69',
+            GasPrice = 1.97,
             Poles = {
                 vector3(1209.010, 2658.830, 37.899),
                 vector3(1206.300, 2661.589, 37.899)
@@ -79,6 +85,7 @@ Config.GasStations = {
         {
             Name = 'Xero Gas',
             Location = 'Grand Senora Desert',
+            GasPrice = 2.25,
             Poles = {
                 vector3(2679.129, 3262.090, 55.400),
                 vector3(2680.360, 3266.811, 55.400)
@@ -87,6 +94,7 @@ Config.GasStations = {
         {
             Name = 'Ron',
             Location = 'Zancudo Lake',
+            GasPrice = 2.05,
             Poles = {
                 vector3(-2556.970, 2326.071, 33.256),
                 vector3(-2552.352, 2326.561, 33.250),
@@ -99,6 +107,7 @@ Config.GasStations = {
         {
             Name = 'Ron',
             Location = 'Paleto Bay',
+            GasPrice = 2.05,
             Poles = {
                 vector3(171.740, 6603.598, 32.047),
                 vector3(179.050, 6605.075, 32.047),
@@ -108,6 +117,7 @@ Config.GasStations = {
         {
             Name = 'Ron',
             Location = 'Tataviam Mountains',
+            GasPrice = 2.55,
             Poles = {
                 vector3(2572.900, 359.340, 108.647),
                 vector3(2573.200, 364.750, 108.647),
@@ -120,6 +130,7 @@ Config.GasStations = {
         {
             Name = 'Globe Oil',
             Location = 'Mount Chiliad',
+            GasPrice = 1.97,
             Poles = {
                 vector3(1698.011, 6418.870, 32.760),
                 vector3(1701.971, 6416.998, 32.760),
@@ -129,6 +140,7 @@ Config.GasStations = {
         {
             Name = 'Limited Gasoline',
             Location = 'Richman Glen',
+            GasPrice = 1.85,
             Poles = {
                 vector3(-1804.000, 794.231, 138.685),
                 vector3(-1809.130, 799.541, 138.685),
@@ -141,6 +153,7 @@ Config.GasStations = {
         {
             Name = 'Xero GAS',
             Location = 'Paleto Bay',
+            GasPrice = 2.25,
             Poles = {
                 vector3(-97.531, 6417.348, 31.639),
                 vector3(-91.769, 6423.095, 31.630)
@@ -149,6 +162,7 @@ Config.GasStations = {
         {
             Name = 'Globe Oil',
             Location = 'Harmony',
+            GasPrice = 1.97,
             Poles = {
                 vector3(262.890, 2607.340, 44.980),
                 vector3(264.770, 2607.679, 44.980)
@@ -157,6 +171,7 @@ Config.GasStations = {
         {
             Name = 'Xero GAS',
             Location = 'Grand Senora Desert',
+            GasPrice = 2.25,
             Poles = {
                 vector3(49.720, 2778.027, 58.040),
                 vector3(48.357, 2779.136, 58.040)
@@ -165,6 +180,7 @@ Config.GasStations = {
         {
             Name = 'Globe Oil',
             Location = 'Ron Alternates Wind Farm',
+            GasPrice = 0.99,
             Type = 'Service',
             Poles = {
                 vector3(2539.239, 2594.650, 37.944)
@@ -173,6 +189,7 @@ Config.GasStations = {
         {
             Name = 'Limited Gasoline',
             Location = 'Mirror Park',
+            GasPrice = 1.85,
             Poles = {
                 vector3(1175.700, -321.709, 69.350),
                 vector3(1183.000, -320.423, 69.350),
@@ -185,6 +202,7 @@ Config.GasStations = {
         {
             Name = 'Xero Gas',
             Location = 'Little Seoul',
+            GasPrice = 2.25,
             Poles = {
                 vector3(-532.026, -1212.196, 18.329),
                 vector3(-529.190, -1213.477, 18.329),
@@ -199,6 +217,7 @@ Config.GasStations = {
         {
             Name = 'Ron',
             Location = 'El Burro Heights',
+            GasPrice = 2.05,
             Poles = {
                 vector3(1207.520, -1398.587, 35.385),
                 vector3(1204.440, -1401.610, 35.385),
@@ -209,6 +228,7 @@ Config.GasStations = {
         {
             Name = 'Globe Oil',
             Location = 'Downtown Vinewood',
+            GasPrice = 1.97,
             Poles = {
                 vector3(611.840, 263.957, 103.270),
                 vector3(611.830, 274.000, 103.270),
@@ -221,6 +241,7 @@ Config.GasStations = {
         {
             Name = 'Ron',
             Location = 'Morningwood',
+            GasPrice = 2.05,
             Poles = {
                 vector3(-1438.571, -269.015, 46.394),
                 vector3(-1429.518, -279.535, 46.394),
@@ -231,6 +252,7 @@ Config.GasStations = {
         {
             Name = 'Limited Gasoline',
             Location = 'Grapeseed',
+            GasPrice = 1.85,
             Poles = {
                 vector3(1684.093, 4932.280, 42.231),
                 vector3(1689.446, 4928.193, 42.231)
@@ -239,6 +261,7 @@ Config.GasStations = {
         {
             Name = 'Globe Oil',
             Location = 'La Puerta',
+            GasPrice = 1.97,
             Poles = {
                 vector3(-325.286, -1480.655, 30.72),
                 vector3(-329.299, -1471.365, 30.72),

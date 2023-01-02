@@ -2,10 +2,10 @@ local player = GetPlayerPed(-1)
 local fullTank = 99
 local canPay = false
 local running = false
-local gasPrice = 1.85
 local vehicle = nil
+local gasPrice = nil
 local actualFuelAmount
-local maxValue
+local payInTotalForFullTank
 
 Citizen.CreateThread(function()
     while true do
@@ -24,8 +24,7 @@ Citizen.CreateThread(function()
                     if IsPedInAnyVehicle(player, false) then
                         ESX.ShowNotification("You must be out of the car to fill the tank")    
                     elseif compareDistances(pedCoords, vehCoords, false) < 5 then
-                        actualFuelAmount = GetVehicleFuelLevel(vehicle)
-                        openUI()
+                        getCalculationsForUI()
                     else
                         ESX.ShowNotification("You are far from your vehicle")
                     end
@@ -35,29 +34,37 @@ Citizen.CreateThread(function()
     end
 end)
 
-function openUI()
+function getCalculationsForUI()
     local gasStationName, gasStationAddress = getGasStationPlayerIsIn()
+    local petrolTankDamage = GetVehiclePetrolTankHealth(vehicle)/10
+    local vehicleMaximumLiters = 100 --hardcoded for now
 
-    ESX.TriggerServerCallback('GasStation:GetInformation', function(gasPrice, tankDamage, amountMax) 
-        maxValue = amountMax
-        if(tankDamage < 20 ) then 
-            tankDamage = "Tank Fuel danificado! Aconselha-se a reparação!"
-        end
-        if GetVehicleFuelLevel(vehicle) >= 99 then
-            ESX.ShowNotification("Your car is already with its tank full!")
-            return
-        end
-        SetNuiFocus(true, true)
-        SendNUIMessage({
-            type = "ui",
-            visible = true,
-            gasPrice = gasPrice,
-            tankDamage = tankDamage,
-            amountMax = amountMax,
-            gasStationName = gasStationName,
-            gasStationAddress = gasStationAddress
-        })
-    end, actualFuelAmount)
+    actualFuelAmount = GetVehicleFuelLevel(vehicle)
+    payInTotalForFullTank = (vehicleMaximumLiters - actualFuelAmount)*gasPrice
+
+    openUI(petrolTankDamage, payInTotalForFullTank)
+end
+
+function openUI(tankDamage, payInTotalForFullTank) 
+    if(tankDamage < 20 ) then 
+        tankDamage = "Damaged!"
+        ESX.ShowNotification("Fuel Tank of this car is damaged! Repair it first!")
+        return
+    end
+    if actualFuelAmount >= 99 then
+        ESX.ShowNotification("Your car is already with its tank full!")
+        return
+    end
+    SetNuiFocus(true, true)
+    SendNUIMessage({
+        type = "ui",
+        visible = true,
+        gasPrice = gasPrice,
+        tankDamage = tankDamage,
+        amountMax = payInTotalForFullTank,
+        gasStationName = gasStationName,
+        gasStationAddress = gasStationAddress
+    })
 end
 
 RegisterNUICallback('GasStation:ui-off', function()
@@ -70,17 +77,24 @@ end)
 
 RegisterNUICallback('GasStation:fuel', function(data)
 
-    local quantity = data.amount
+    local quantity = tonumber(data.amount)
+    print(data.gasPrice)
+    gasPrice = tonumber(data.gasPrice)
     if quantity == "" then
         quantity = 0
         ESX.ShowNotification("Seleciona o valor que queres atestar")
         return
     end
+
     local finalactualFuelAmount = actualFuelAmount + (quantity*1)/gasPrice
-    local maxGasAllowedInTank = actualFuelAmount + (maxValue*1)/gasPrice
+    print("finalactualFuelAmount = actualFuelAmount(" .. actualFuelAmount .. ") + (quantity" .. quantity .. " *1) / gasPrice" .. gasPrice .. " = " .. finalactualFuelAmount)
+
+    local maxGasAllowedInTank = actualFuelAmount + (payInTotalForFullTank*1)/gasPrice
+    print("maxGasAllowedInTank = actualFuelAmount(" .. actualFuelAmount .. ") + (payInTotalForFullTank" .. payInTotalForFullTank .. " *1) / gasPrice" .. gasPrice .. " = " .. maxGasAllowedInTank)
 
     if payGas(quantity) then
         if(finalactualFuelAmount > maxGasAllowedInTank) then
+            print("if(finalactualFuelAmount > maxGasAllowedInTank) then SetVehicleFuelLevel(vehicle, maxGasAllowedInTank: " .. maxGasAllowedInTank .. ")")
             SetVehicleFuelLevel(vehicle, maxGasAllowedInTank)
             TriggerServerEvent('GasStation:SaveFuelAmount', GetVehicleNumberPlateText(vehicle), maxGasAllowedInTank)
         else
@@ -92,9 +106,6 @@ RegisterNUICallback('GasStation:fuel', function(data)
 end)
 
 RegisterNUICallback('GasStation:fuelfull', function()
-
-    print(actualFuelAmount)
-
     local quantity = (100 - actualFuelAmount) * 1 / gasPrice
     if payGas(quantity) then
         SetVehicleFuelLevel(vehicle, fullTank)
@@ -106,7 +117,7 @@ end)
 function payGas(amount)
     running = true
     
-    TriggerServerEvent('GasStation:PayGasSV', amount)
+    TriggerServerEvent('GasStation:PayGasSV', amount, payInTotalForFullTank)
     while running do
         Wait(200)
     end
@@ -168,6 +179,7 @@ function getGasStationPlayerIsIn()
                 lowestDist = dist
                 gasStationName = Config.GasStations.stations[i].Name
                 gasStationAddress = Config.GasStations.stations[i].Location
+                gasPrice = Config.GasStations.stations[i].GasPrice
             end
         end
     end

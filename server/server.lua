@@ -1,26 +1,11 @@
-local amountMax
-
-ESX.RegisterServerCallback('GasStation:GetInformation', function(source, cb, fuelAvailable)
-    local playerPed = GetPlayerPed(source)
-    local vehicle = GetVehiclePedIsIn(playerPed, true)
-
-    local petrolTankDamage = GetVehiclePetrolTankHealth(vehicle)/10
-    local vehcileMaximumLiters = 100 --hardcoded for now
-    local gasPrice = 1.85 --hardcoded for now
-    local litersAvailableInTank = fuelAvailable
-    amountMax = (vehcileMaximumLiters - litersAvailableInTank)*gasPrice
-
-    cb(gasPrice, petrolTankDamage, amountMax)
-end)
-
-RegisterNetEvent('GasStation:PayGasSV', function(amount)
+RegisterNetEvent('GasStation:PayGasSV', function(amount, payInTotalForFullTank)
     local _amount = tonumber(amount)
     local _source = source
 	local xPlayer = ESX.GetPlayerFromId(_source)
 
     if xPlayer.getMoney() >= _amount then
-        if(_amount > amountMax) then
-            xPlayer.removeMoney(amountMax)
+        if(_amount > payInTotalForFullTank) then
+            xPlayer.removeMoney(payInTotalForFullTank)
         else
             xPlayer.removeMoney(_amount)
         end
