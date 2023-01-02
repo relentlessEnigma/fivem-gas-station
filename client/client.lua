@@ -78,7 +78,6 @@ end)
 RegisterNUICallback('GasStation:fuel', function(data)
 
     local quantity = tonumber(data.amount)
-    print(data.gasPrice)
     gasPrice = tonumber(data.gasPrice)
     if quantity == "" then
         quantity = 0
@@ -87,14 +86,10 @@ RegisterNUICallback('GasStation:fuel', function(data)
     end
 
     local finalactualFuelAmount = actualFuelAmount + (quantity*1)/gasPrice
-    print("finalactualFuelAmount = actualFuelAmount(" .. actualFuelAmount .. ") + (quantity" .. quantity .. " *1) / gasPrice" .. gasPrice .. " = " .. finalactualFuelAmount)
-
     local maxGasAllowedInTank = actualFuelAmount + (payInTotalForFullTank*1)/gasPrice
-    print("maxGasAllowedInTank = actualFuelAmount(" .. actualFuelAmount .. ") + (payInTotalForFullTank" .. payInTotalForFullTank .. " *1) / gasPrice" .. gasPrice .. " = " .. maxGasAllowedInTank)
 
     if payGas(quantity) then
         if(finalactualFuelAmount > maxGasAllowedInTank) then
-            print("if(finalactualFuelAmount > maxGasAllowedInTank) then SetVehicleFuelLevel(vehicle, maxGasAllowedInTank: " .. maxGasAllowedInTank .. ")")
             SetVehicleFuelLevel(vehicle, maxGasAllowedInTank)
             TriggerServerEvent('GasStation:SaveFuelAmount', GetVehicleNumberPlateText(vehicle), maxGasAllowedInTank)
         else
