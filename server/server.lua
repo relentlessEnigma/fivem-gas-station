@@ -32,4 +32,5 @@ end)
 
 RegisterNetEvent('GasStation:SaveFuelAmount', function(plate, fuel)
     MySQL.Async.fetchAll('UPDATE owned_vehicles SET fuel = @fuel WHERE plate = @plate', {['@fuel'] = fuel, ['@plate'] = plate})
+    MySQL.Async.fetchAll('UPDATE theft_vehicles SET fuel = @fuel WHERE carPlate = @carPlate', {['@fuel'] = fuel, ['@carPlate'] = plate})
 end)

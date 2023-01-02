@@ -181,3 +181,7 @@ function getTableLenght(table)
     end
     return size
 end
+
+function isPlayerOwnerOfVehicle(vehicle)
+    
+end
